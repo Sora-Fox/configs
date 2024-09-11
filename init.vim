@@ -4,28 +4,27 @@
 call plug#begin()
 
 " --- Themes and Appearance ---
-Plug 'olimorris/onedarkpro.nvim'
 " Plug 'rafi/awesome-vim-colorschemes'
+Plug 'olimorris/onedarkpro.nvim'
 
-" --- Status Line and Airline ---
+" --- Airline ---
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes' " Themes for vim-airline
+Plug 'tpope/vim-fugitive' " Git Integration
 
-" --- Linting and Code Analysis ---
+" --- Code Analysis & Autocomplete ---
 Plug 'dense-analysis/ale' " Asynchronous Lint Engine (ALE)
-
-" --- Git Integration ---
-Plug 'tpope/vim-fugitive'
-
-" --- Autocompletion ---
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " --- Clang Format Support ---
 Plug 'rhysd/vim-clang-format'
 Plug 'kana/vim-operator-user' " Recommended for vim-clang-format
 
-call plug#end()
+" --- Other ---
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter'
 
+call plug#end()
 
 " ===================================================================
 "                        AIRLINE CONFIGURATION
@@ -33,14 +32,21 @@ call plug#end()
 " | A | B |                   C                    X | Y | Z |  [...]
 
 let g:airline_theme='onedark'
+let g:airline_mode_map = { 'n' : 'N',
+                         \ 'i' : 'I',
+                         \ 'R' : 'R',
+                         \ 'v' : 'V',
+                         \ 'V' : 'VL',
+                         \ 'c' : 'C',
+                         \ 'multi'  : 'M',
+                         \ 't' : 'T', }
+" 'multi' is for displaying the multiple cursor mode
 
 " Statusline sections setup
-let g:airline_section_a = ''
 let g:airline_section_c = '%t %{CustomModifiedFlag()}' " filename
 let g:airline_section_x = ''
 let g:airline_section_y = '%{strlen(&filetype) ?
             \ &filetype : "none"} %{strlen(&fenc) ? &fenc : "none"}'
-" line:column | total lines : total columns
 let g:airline_section_z = '%l:%c | %L:%{MaxColumn()}'
 
 " Function to show modified flag
@@ -92,6 +98,15 @@ let g:clang_format#auto_format_on_insert_leave = 1
 
 
 " ===================================================================
+"                         NERD TREE 
+" ===================================================================
+" Close vim if no tabs but NERDTree 
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && 
+    \ exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+let g:NERDTreeFileLines = 1 " Show total lines 
+
+  
+" ===================================================================
 "                    SYNTAX AND APPEARANCE
 " ===================================================================
 syntax on " Enable syntax highlighting
@@ -106,9 +121,8 @@ highlight Normal ctermbg=NONE guibg=#262626 guifg=#afafaf
 highlight CursorLine ctermbg=gray guibg=#1e1e1e
 highlight Comment ctermbg=NONE guifg=#5f5f5f
 highlight LineNr ctermfg=darkgrey guibg=#262626 guifg=#6c6c6c
-highlight CursorLineNr ctermfg=yellow guibg=#262625 guifg=#e0af68
+highlight CursorLineNr ctermfg=yellow guibg=#262625 guifg=#e0af68 
 highlight Todo ctermbg=yellow guifg=#ffbb00 gui=bold
-
 set incsearch " Highlight search results as you type
 set hlsearch " Highlight all search matches
 
@@ -139,6 +153,7 @@ set belloff=all " Disable all bells
 set backspace=indent,eol,start " Allow backspacing over everything
 set wrap " Enable line wrapping
 set linebreak " Break wrapped lines at word boundaries
+set so=30 " Keep current line on the screens center
 
 
 " ===================================================================
@@ -154,5 +169,5 @@ inoremap <silent><expr> <C-j>
 inoremap <silent><expr> <C-k>
             \ coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
 
-" Save and quit with Ctrl+Q
 nnoremap <C-q> :wqa<CR>
+nnoremap <C-n> :NERDTreeToggle <CR>
