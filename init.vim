@@ -4,57 +4,24 @@
 call plug#begin()
 
 " --- Themes and Appearance ---
-" Plug 'rafi/awesome-vim-colorschemes'
-Plug 'olimorris/onedarkpro.nvim'
+Plug 'rafi/awesome-vim-colorschemes'
+" Plug 'olimorris/onedarkpro.nvim'
 
-" --- Airline ---
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes' " Themes for vim-airline
-Plug 'tpope/vim-fugitive' " Git Integration
-
-" --- Code Analysis & Autocomplete ---
+" --- Analysis & Autocomplete & Format ---
 Plug 'dense-analysis/ale' " Asynchronous Lint Engine (ALE)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" --- Clang Format Support ---
 Plug 'rhysd/vim-clang-format'
-Plug 'kana/vim-operator-user' " Recommended for vim-clang-format
 
 " --- Other ---
-Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
+Plug 'tpope/vim-fugitive' " Git Integration
 
 call plug#end()
 
+
 " ===================================================================
-"                        AIRLINE CONFIGURATION
+"                        STATUSLINE CONFIGURATION
 " ===================================================================
-" | A | B |                   C                    X | Y | Z |  [...]
-
-let g:airline_theme='onedark'
-let g:airline_mode_map = { 'n' : 'N',
-                         \ 'i' : 'I',
-                         \ 'R' : 'R',
-                         \ 'v' : 'V',
-                         \ 'V' : 'VL',
-                         \ 'c' : 'C',
-                         \ 'multi'  : 'M',
-                         \ 't' : 'T', }
-" 'multi' is for displaying the multiple cursor mode
-
-" Statusline sections setup
-let g:airline_section_c = '%t %{CustomModifiedFlag()}' " filename
-let g:airline_section_x = ''
-let g:airline_section_y = '%{strlen(&filetype) ?
-            \ &filetype : "none"} %{strlen(&fenc) ? &fenc : "none"}'
-let g:airline_section_z = '%l:%c | %L:%{MaxColumn()}'
-
-" Function to show modified flag
-function! CustomModifiedFlag()
-  return &modified ? '✗' : ''
-endfunction
-
-" Function to get max column number
 function! MaxColumn()
     let max_col = 0
     for line in getline(1, '$')
@@ -63,30 +30,49 @@ function! MaxColumn()
     return max_col
 endfunction
 
-" Enable ALE integration with Airline
-let g:airline#extensions#coc#enabled = 0
-let g:airline#extensions#ale#enabled = 1
-let g:ale_set_quickfix = 0
-let g:airline#extensions#ale#warnings_format = '%l'
-let g:airline#extensions#ale#errors_format = '%l'
+function! ModifiedFN()
+    return &modified ? expand('%:f') : ''
+endfunction
 
-" Git branch display in airline
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#branch#empty_message = ''
-let g:airline#extensions#branch#displayed_head_limit = 25
+function! UnModifiedFN()
+    return &modified ? '' : expand('%:f')
+endfunction
 
-" Airline symbols
-let g:airline_powerline_fonts = 1
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.dirty=' ⚝'
+function! CurrentMode()
+    let l:mode = mode()
+    return
+                \ l:mode ==# 'n' ? 'N' :
+                \ l:mode ==# 'i' ? 'I' :
+                \ l:mode ==# 'c' ? 'C' :
+                \ l:mode ==# 'R' ? 'R' :
+                \ l:mode ==# 'v' ? 'V' :
+                \ l:mode ==# 'V' ? 'VL' :
+                \ l:mode ==# "\<C-v>" ? 'VB' :
+                \ l:mode ==# 't' ? 'T' :
+                \ 'UNKNOWN'
+endfunction
+
+set statusline=
+set statusline+=%#ModeGroup#
+set statusline+=\ %{CurrentMode()}
+set statusline+=%#LeftGroup#
+set statusline+=%{strlen(FugitiveHead())?'\ │\ ':''}
+set statusline+=%{FugitiveHead()}
+set statusline+=\ │\ %{strlen(&filetype)?&filetype:'none'}
+set statusline+=\ │\ %{strlen(&fenc)?&fenc:'none'}
+set statusline+=%=
+
+set statusline+=%#ModifiedGroup#
+set statusline+=%{ModifiedFN()}
+set statusline+=%#UnModifiedGroup#
+set statusline+=%{UnModifiedFN()}
+set statusline+=%=
+
+set statusline+=%#RightGroup#
+set statusline+=%l:%c
+set statusline+=\ │\ %L:%{MaxColumn()}
+set statusline+=\ │\ W:%{ale#statusline#Count(1).warning}
+set statusline+=\ │\ E:%{ale#statusline#Count(1).error}
 
 
 " ===================================================================
@@ -95,15 +81,6 @@ let g:airline_symbols.dirty=' ⚝'
 let g:clang_format#detect_style_file = 1 " Auto-detect .clang-format
 let g:clang_format#auto_format = 1 " Auto-format on save
 let g:clang_format#auto_format_on_insert_leave = 1
-
-
-" ===================================================================
-"                         NERD TREE 
-" ===================================================================
-" Close vim if no tabs but NERDTree 
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && 
-    \ exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-let g:NERDTreeFileLines = 1 " Show total lines 
 
   
 " ===================================================================
@@ -117,15 +94,21 @@ set number relativenumber " Show absolute and relative line numbers
 
 " Highlighting customizations
 set cursorline " Highlight the current line
-highlight Normal ctermbg=NONE guibg=#262626 guifg=#afafaf
-highlight CursorLine ctermbg=gray guibg=#1e1e1e
+highlight Normal ctermbg=NONE guibg=NONE " guifg=#afafaf 
+highlight CursorLine ctermbg=NONE guibg=#1e1e1e
 highlight Comment ctermbg=NONE guifg=#5f5f5f
-highlight LineNr ctermfg=darkgrey guibg=#262626 guifg=#6c6c6c
-highlight CursorLineNr ctermfg=yellow guibg=#262625 guifg=#e0af68 
-highlight Todo ctermbg=yellow guifg=#ffbb00 gui=bold
+highlight LineNr ctermfg=darkgrey guibg=NONE guifg=#6c6c6c 
+highlight CursorLineNr ctermfg=yellow guibg=NONE guifg=#e0af68
+highlight Todo ctermfg=yellow guifg=#ffbb00 gui=bold
+"Statusline
+highlight ModeGroup guibg=#1e1e1e gui=bold 
+highlight LeftGroup guibg=#1e1e1e
+highlight RightGroup guibg=#1e1e1e 
+highlight ModifiedGroup guibg=#1e1e1e guifg=#BDB76B
+highlight UnModifiedGroup guibg=#1e1e1e guifg=#85BB65
+
 set incsearch " Highlight search results as you type
 set hlsearch " Highlight all search matches
-
 
 " ===================================================================
 "                      INDENTATION AND TABS
@@ -151,8 +134,8 @@ set termencoding=utf-8 " Set terminal encoding to UTF-8
 " ===================================================================
 set belloff=all " Disable all bells
 set backspace=indent,eol,start " Allow backspacing over everything
-set wrap " Enable line wrapping
-set linebreak " Break wrapped lines at word boundaries
+set nowrap " Disable line wrapping
+" set linebreak " Break wrapped lines at word boundaries
 set so=30 " Keep current line on the screens center
 
 
@@ -168,6 +151,6 @@ inoremap <silent><expr> <C-j>
             \ coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
 inoremap <silent><expr> <C-k>
             \ coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
+nnoremap <C-s> :wqa<CR>
+inoremap jj <ESC>
 
-nnoremap <C-q> :wqa<CR>
-nnoremap <C-n> :NERDTreeToggle <CR>
