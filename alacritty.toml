@@ -1,0 +1,52 @@
+[shell]
+program = "/bin/zsh"
+
+[env]
+TERM = "xterm-256color"
+#WINIT_X11_SCALE_FACTOR = "2"
+#WINIT_WAYLAND_SCALE_FACTOR = "2"
+
+[window]
+dimensions = { columns = 80, lines = 25 }
+padding = { x = 0, y = 0 } 
+dynamic_padding = false
+startup_mode = "Windowed"
+opacity = 1
+
+[font]
+size = 15.0
+normal = { family = "Source Code Pro", style = "Regular" }
+
+[colors]
+primary = { background = "#1d1f21", foreground = "#c5c8c6" }
+cursor = { text = "#1d1f21", cursor = "#c5c8c6" }
+
+[colors.bright]
+black = "0x5c6370"
+blue = "0x61afef"
+cyan = "0x56b6c2"
+green = "0x98c379"
+magenta = "0xc678dd"
+red = "0xe06c75"
+white = "0xffffff"
+yellow = "0xd19a66"
+
+[colors.normal]
+black = "0x0e1013"
+blue = "0x4fa6ed"
+cyan = "0x48b0bd"
+green = "0x8ebd6b"
+magenta = "0xc678dd"
+red = "0xe55561"
+white = "0xabb2bf"
+yellow = "0xe2b86b"
+
+[scrolling]
+history = 10000
+
+[cursor]
+style = "Block"
+
+[mouse]
+hide_when_typing = true
+
