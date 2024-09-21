@@ -1,11 +1,12 @@
-# Base settings 
+ #Base settings 
+#BasedOnStyle: LLVM
 BasedOnStyle: Google
 Language: Cpp
 Standard: Cpp11
 ColumnLimit: 80
 MaxEmptyLinesToKeep: 2
 
-# Indentation settings
+ #Indentation settings
 IndentWidth: 4
 TabWidth: 4
 UseTab: Never
@@ -15,26 +16,26 @@ IndentCaseLabels: false
 ContinuationIndentWidth: 4
 NamespaceIndentation: None
 
-# Alignments
+ #Alignments
 AlignEscapedNewlinesLeft: true
 AlignConsecutiveAssignments: false
 AlignTrailingComments: true
 
-# Spacing rules
+ #Spacing rules
 SpaceBeforeParens: ControlStatements
 SpaceBeforeAssignmentOperators: true
 SpaceAfterCStyleCast: false
 SpacesInAngles: false
 SpacesInContainerLiterals: true
 
-# Wrapping and breaking rules
+ #Wrapping and breaking rules
 BreakBeforeBraces: Attach
 BreakBeforeBinaryOperators: false
 AlwaysBreakTemplateDeclarations: true
 BreakConstructorInitializersBeforeComma: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 
-# Brace wrapping options
+ #Brace wrapping options
 BraceWrapping:
   AfterClass: true
   AfterFunction: true
@@ -44,7 +45,7 @@ BraceWrapping:
   IndentBraces: false
 Cpp11BracedListStyle: true
 
-# Short code block rules
+ #Short code block rules
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Inline

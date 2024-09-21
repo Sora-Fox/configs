@@ -1,0 +1,22 @@
+{
+  "logo": {
+    "type": "file",
+    "source": "~/.config/fastfetch/arch_logo.txt",
+    "padding": {
+      "top": 1,
+      "left": 2
+    }
+  },
+  "modules": [
+    "break",
+    { "type": "custom", "format": "───────────────────────────────────────────────" },
+    "os",
+    "kernel",
+    "packages",
+    "wm",
+    "shell",
+    "terminal",
+    { "type": "custom", "format": "───────────────────────────────────────────────" }
+  ]
+}
+

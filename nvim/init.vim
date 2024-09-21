@@ -18,7 +18,6 @@ Plug 'tpope/vim-fugitive' " Git Integration
 
 call plug#end()
 
-
 " ===================================================================
 "                        STATUSLINE CONFIGURATION
 " ===================================================================
@@ -56,10 +55,11 @@ set statusline=
 set statusline+=%#ModeGroup#
 set statusline+=\ %{CurrentMode()}
 set statusline+=%#LeftGroup#
-set statusline+=%{strlen(FugitiveHead())?'\ │\ ':''}
+set statusline+=%{strlen(FugitiveHead())?'\ \ │\ ':''}
 set statusline+=%{FugitiveHead()}
 set statusline+=\ │\ %{strlen(&filetype)?&filetype:'none'}
-set statusline+=\ │\ %{strlen(&fenc)?&fenc:'none'}
+set statusline+=\ │\ %{strlen(&fenc)?&fenc:'none'}\ │
+set statusline+=%{&readonly?'\ RO\ │\ ':''}
 set statusline+=%=
 
 set statusline+=%#ModifiedGroup#
@@ -69,8 +69,9 @@ set statusline+=%{UnModifiedFN()}
 set statusline+=%=
 
 set statusline+=%#RightGroup#
-set statusline+=%l:%c
-set statusline+=\ │\ %L:%{MaxColumn()}
+" set statusline+=\ %ls
+set statusline+=│\ %l:%L
+set statusline+=\ │\ %c:%{MaxColumn()}
 set statusline+=\ │\ W:%{ale#statusline#Count(1).warning}
 set statusline+=\ │\ E:%{ale#statusline#Count(1).error}
 
@@ -94,9 +95,9 @@ set number relativenumber " Show absolute and relative line numbers
 
 " Highlighting customizations
 set cursorline " Highlight the current line
-highlight Normal ctermbg=NONE guibg=NONE " guifg=#afafaf 
+highlight Normal ctermbg=NONE guibg=NONE guifg=#EAE0C8
 highlight CursorLine ctermbg=NONE guibg=#1e1e1e
-highlight Comment ctermbg=NONE guifg=#5f5f5f
+highlight Comment ctermbg=NONE guifg=#6C6874
 highlight LineNr ctermfg=darkgrey guibg=NONE guifg=#6c6c6c 
 highlight CursorLineNr ctermfg=yellow guibg=NONE guifg=#e0af68
 highlight Todo ctermfg=yellow guifg=#ffbb00 gui=bold
@@ -109,6 +110,7 @@ highlight UnModifiedGroup guibg=#1e1e1e guifg=#85BB65
 
 set incsearch " Highlight search results as you type
 set hlsearch " Highlight all search matches
+
 
 " ===================================================================
 "                      INDENTATION AND TABS

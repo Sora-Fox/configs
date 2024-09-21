@@ -22,24 +22,24 @@ primary = { background = "#1d1f21", foreground = "#c5c8c6" }
 cursor = { text = "#1d1f21", cursor = "#c5c8c6" }
 
 [colors.bright]
-black = "0x5c6370"
-blue = "0x61afef"
-cyan = "0x56b6c2"
-green = "0x98c379"
-magenta = "0xc678dd"
-red = "0xe06c75"
-white = "0xffffff"
-yellow = "0xd19a66"
+black = "#444444"
+red = "#FF2740"
+green = "#ABE15B"
+yellow = "#FFD242"
+blue = "#0092FF"
+magenta = "#9A5FEB"
+cyan = "#67FFF0"
+white = "#FFFFFF"
 
 [colors.normal]
-black = "0x0e1013"
-blue = "0x4fa6ed"
-cyan = "0x48b0bd"
-green = "0x8ebd6b"
-magenta = "0xc678dd"
-red = "0xe55561"
-white = "0xabb2bf"
-yellow = "0xe2b86b"
+black = "#232323"
+red = "#FF000F"
+green = "#8CE10B"
+yellow = "#FFB900"
+blue = "#008DF8"
+magenta = "#6D43A6"
+cyan = "#00D8EB"
+white = "#FFFFFF"
 
 [scrolling]
 history = 10000
