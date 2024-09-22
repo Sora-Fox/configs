@@ -136,8 +136,8 @@ set termencoding=utf-8 " Set terminal encoding to UTF-8
 " ===================================================================
 set belloff=all " Disable all bells
 set backspace=indent,eol,start " Allow backspacing over everything
-set wrap " Enable line wrapping
-set linebreak " Break wrapped lines at word boundaries
+set nowrap " Enable line wrapping
+" set linebreak " Break wrapped lines at word boundaries
 set so=30 " Keep current line on the screens center
 
 
