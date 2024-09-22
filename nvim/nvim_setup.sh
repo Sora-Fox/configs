@@ -47,7 +47,7 @@ fi
 if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
   echo "Installing vim-plug..."
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim > dev/null
 else
   echo "vim-plug already installed"
 fi
@@ -59,19 +59,19 @@ if ! command -v node &> /dev/null; then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  nvm install 22export NVM_DIR="$HOME/.nvm"
+  nvm install 22 > dev/null
 else
   echo "Node.js already installed"
 fi
 
 if ! command -v clang-format &> /dev/null; then
   echo "Installing clang-format..."
-  install_package "clang-format"
+  #install_package "clang-format" > dev/null
 else
   echo "clang-format already installed"
 fi
 
-if command -v nvim &> /dev/null && command -v node &> /dev/null && command -v clang-format &> /dev/null; then
+if command -v nvim &> /dev/null && command -v node &> /dev/null; then
   echo "All dependeces are installed"
 else
     echo "Some issue during dependeces instalation"
@@ -81,7 +81,10 @@ fi
 echo "Copying ./init.vim to ~/.config/nvim/init.vim"
 cp ./init.vim $CONFIG_DIR/init.vim
 
-echo "Installing neovim plugins..."
-nvim +PlugInstall +qall
+echo "Installing Neovim plugins..."
+nvim --headless +PlugInstall +qall > /dev/null
+
+echo "Installing coc-clangd extension..."
+nvim --headless +"CocInstall -sync coc-clangd" +qall > /dev/null
 
 echo "Setup finised"
