@@ -6,6 +6,7 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 NODE_VERSION=22
 OK_MSG="\t[ ${GREEN}OK${NC} ]"
+ERR_MSG="[ ${RED}ERROR${NC} ]"
 
 detect_package_manager() {
   if command -v apt &> /dev/null; then
@@ -39,11 +40,18 @@ install_package() {
   echo -e $OK_MSG 
 }
 
+if [ ! -f ./init.vim ]; then
+  echo -en $ERR_MSG
+  echo -e " Can't find init.vim file in the current dir. Make sure that you're in the script dir."
+  exit 1
+fi
+
 CONFIG_DIR=~/.config/nvim
 if [ ! -d "$CONFIG_DIR" ]; then
   mkdir -p "$CONFIG_DIR"
 elif [ -f $CONFIG_DIR/init.vim ]; then
-  echo -e "${RED}Remove ~/.config/nvim/init.vim and try again${NC}"
+  echo -en $ERR_MSG
+  echo " Configuration file already exists. Remove ~/.config/nvim/init.vim and try again."
   exit 1
 fi
 
@@ -61,8 +69,8 @@ if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
 fi
 
 if ! command -v node &> /dev/null; then
-  echo -n "Installing: nvm"
-  curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash &> /dev/null
+  echo -n "Installing: nvm  "
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash &> /dev/null
   export NVM_DIR="$HOME/.nvm" &> /dev/null
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &> /dev/null
   echo -e $OK_MSG 
@@ -81,18 +89,16 @@ if ! command -v clang-format &> /dev/null; then
 fi
 
 if ! command -v nvim &> /dev/null || ! command -v node &> /dev/null; then
-    echo -e "${RED}Some issue during dependeces instalation. Try to restart terminal and run script again.${NC}"
-    exit 1
+  echo -en $ERR_MSG
+  echo -e " Some issue during dependeces instalation. Try to restart the terminal and run the script again.\nMake sure that following commands work correctly: nvim, node, clang-format."
+  exit 1
 fi
 
-echo -n "Copying ./init.vim to ~/.config/nvim/init.vim"
-cp ./init.vim $CONFIG_DIR/init.vim
-echo -e $OK_MSG 
-
 echo -n "Installing: plugins"
+cp ./init.vim $CONFIG_DIR/init.vim
 nvim --headless +PlugInstall +qall &> /dev/null
 nvim --headless +"CocInstall -sync coc-clangd" +qall &> /dev/null
 nvim --headless +"CocCommand clangd.install" +qall &> /dev/null
 echo -e $OK_MSG 
 
-echo -e "${GREEN}Setup finised${NC}"
+echo -e "${GREEN}Setup finised!${NC}"
