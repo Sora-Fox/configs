@@ -6,14 +6,13 @@ GREEN='\033[0;32m'
 YELLOW='\e[0;33m'
 NC='\033[0m'
 
-OK_MSG="[  ${GREEN}OK${NC}  ]  "
-ERR_MSG="[ ${RED}ERRR${NC} ]  "
+OK_MSG="[ ${GREEN}DONE${NC} ]  "
+ERR_MSG="[ ${RED}FAIL${NC} ]  "
 WARN_MSG="[ ${YELLOW}WARN${NC} ]  "
-INFO_MSG="[ ${GREEN}INFO${NC} ]  "
-
+INFO_MSG="[ INFO ]  "
 
 VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-VIM_PLUG_PATH="~/.local/share/nvim/site/autoload/plug.vim"
+VIM_PLUG_PATH="${HOME}/.local/share/nvim/site/autoload"
 
 CONFIG_DIR=~/.config/nvim
 CONFIG_FILE="${CONFIG_DIR}/init.vim"
@@ -61,9 +60,12 @@ echo -e "${INFO_MSG}Cheking packages: neovim, nodejs, clang, vim-plug"
 install_package neovim nvim
 install_package nodejs node
 install_package clang clang-format
-if [ ! -f $VIM_PLUG_PATH ]; then
-  curl -s -flo $VIM_PLUG_PATH --create-dirs $VIM_PLUG_URL
+
+if [ ! -d $VIM_PLUG_PATH ]; then
+  rm -rf $VIM_PlUG_PATH
 fi
+mkdir -p $VIM_PLUG_PATH;
+curl -so $VIM_PLUG_PATH/plug.vim $VIM_PLUG_URL
 echo -e "${OK_MSG}vim-plug"
 
 echo -e "${INFO_MSG}Installing neovim plugins"
