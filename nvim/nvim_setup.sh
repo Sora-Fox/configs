@@ -17,6 +17,8 @@ VIM_PLUG_PATH="${HOME}/.local/share/nvim/site/autoload"
 CONFIG_DIR=~/.config/nvim
 CONFIG_FILE="${CONFIG_DIR}/init.vim"
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 
 install_package() {
     PACKAGE=$1
@@ -43,7 +45,7 @@ install_package() {
     fi
 }
 
-if [ ! -f ./init.vim ]; then
+if [ ! -f $SCRIPT_DIR/init.vim ]; then
   echo -en $ERR_MSG
   echo -e "Can't find init.vim file in the current dir. Make sure that you're in the script dir."
   exit 1
@@ -69,7 +71,7 @@ curl -so $VIM_PLUG_PATH/plug.vim $VIM_PLUG_URL
 echo -e "${OK_MSG}vim-plug"
 
 echo -e "${INFO_MSG}Installing neovim plugins"
-cp ./init.vim $CONFIG_DIR/init.vim
+cp $SCRIPT_DIR/init.vim $CONFIG_DIR/init.vim
 nvim --headless +PlugInstall +qall &> /dev/null
 nvim --headless +"CocInstall -sync coc-clangd" +qall &> /dev/null
 nvim --headless +"CocCommand clangd.install" +qall &> /dev/null
