@@ -51,7 +51,7 @@ alias 666='chmod -R 666'
 alias 755='chmod -R 755'
 alias 777='chmod -R 777'
 
-# Count all files (recursively) in the current folder
+# Count all files (recursively) in the current directory 
 alias countfiles="for t in files links directories; do echo \`find . -type \${t:0:1} | wc -l\` \$t; done"
 
 function __prompt {
@@ -76,7 +76,6 @@ function __prompt {
     local SEPARATOR="\[${LIGHTGRAY}\] ॰ "
 
     local LAST_COMMAND=$? # Status of the last command
-    # Show error exit code if there is one
     if [[ $LAST_COMMAND != 0 ]]; then
         case $LAST_COMMAND in
             1) error_msg="General error" ;;
@@ -88,7 +87,7 @@ function __prompt {
             137) error_msg="Killed \(signal 9\)" ;;
             *) error_msg="Unknown error code: $LAST_COMMAND" ;;
         esac
-            PS1="\[${RED}\]ERROR: $error_msg\[${NOCOLOR}\]\n"
+        PS1="\[${RED}\]ERROR: $error_msg\[${NOCOLOR}\]\n"
     else
         PS1=""
     fi
@@ -100,11 +99,9 @@ function __prompt {
         PS1+="\[${RED}\]\u@\h"
     else
         PS1+="\[${RED}\]\u"
-        #PS1+=" "
     fi
-    # Current directory
     PS1+=$SEPARATOR
-	PS1+="\[${BROWN}\]\w"
+	PS1+="\[${BROWN}\]\w" # Current directory
 
     current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     modified_files=$(git diff --name-only 2>/dev/null | wc -l)
@@ -113,8 +110,7 @@ function __prompt {
     max_length=20
     if [ ${#current_branch} -gt $max_length ]; then
         current_branch="${current_branch:0:$max_length}…"
-    fi
-    if [ -n "$current_branch" ]; then
+    fi; if [ -n "$current_branch" ]; then
         PS1+=$SEPARATOR
         PS1+="\[${CYAN}\]$current_branch"
     fi; if [ "$untracked_files" -ne 0 ]; then
@@ -131,7 +127,7 @@ function __prompt {
 	if [[ $EUID -ne 0 ]]; then
 		PS1+="\n\[${GREEN}\]>\[${NOCOLOR}\] " # Normal user
 	else
-        PS1+="\n\[${RED}\]➤ \[${NOCOLOR}\] "
+        PS1+="\n\[${RED}\]➤ \[${NOCOLOR}\] "  # Root user
 	fi
 }
 
