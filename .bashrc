@@ -55,22 +55,22 @@ alias 777='chmod -R 777'
 alias countfiles="for t in files links directories; do echo \`find . -type \${t:0:1} | wc -l\` \$t; done"
 
 function __prompt {
-    local LIGHTGRAY="\033[0;37m"
     local WHITE="\033[1;37m"
     local BLACK="\033[0;30m"
-    local DARKGRAY="\033[1;30m"
     local RED="\033[0;31m"
-    local LIGHTRED="\033[1;31m"
     local GREEN="\033[0;32m"
-    local LIGHTGREEN="\033[1;32m"
     local BROWN="\033[0;33m"
     local YELLOW="\033[1;33m"
     local BLUE="\033[0;34m"
-    local LIGHTBLUE="\033[1;34m"
     local MAGENTA="\033[0;35m"
-    local LIGHTMAGENTA="\033[1;35m"
     local CYAN="\033[0;36m"
+    local LIGHTGRAY="\033[0;37m"
+    local LIGHTRED="\033[1;31m"
+    local LIGHTGREEN="\033[1;32m"
+    local LIGHTBLUE="\033[1;34m"
+    local LIGHTMAGENTA="\033[1;35m"
     local LIGHTCYAN="\033[1;36m"
+    local DARKGRAY="\033[1;30m"
     local NOCOLOR="\033[0m"
 
     local SEPARATOR="\[${LIGHTGRAY}\] ॰ "
@@ -119,13 +119,16 @@ function __prompt {
         PS1+="\[${CYAN}\]$current_branch"
     fi; if [ "$untracked_files" -ne 0 ]; then
         PS1+=$SEPARATOR
-        PS1+="\[${BROWN}\]U~${untracked_files}\e[0m"
+        #PS1+="\[${BROWN}\]U~${untracked_files}\e[0m"
+        PS1+="\033[38;5;220mU~${untracked_files}\e[0m"
     fi; if [ "$modified_files" -ne 0 ]; then
         PS1+=$SEPARATOR
-        PS1+="\[${MAGENTA}\]M~${modified_files}\e[0m"
+        #PS1+="\[${MAGENTA}\]M~${modified_files}\e[0m"
+        PS1+="\033[38;5;208mM~${modified_files}\e[0m"
     fi; if [ "$staged_files" -ne 0 ]; then
         PS1+=$SEPARATOR
-        PS1+="\[${BLUE}\]S~${staged_files}\e[0m"
+        #PS1+="\[${BLUE}\]S~${staged_files}\e[0m"
+        PS1+="\033[38;5;183mS~${staged_files}\e[0m"
     fi
 
 	if [[ $EUID -ne 0 ]]; then
