@@ -70,14 +70,13 @@ install_node() {
 
 install_vim_plug() {
     if [[ -f "$VIM_PLUG_PATH/plug.vim" ]]; then
-        echo -e "${WARN} Existing vim-plug found. Reinstalling..."
-        rm -f "$VIM_PLUG_PATH/plug.vim"
+        echo -e "${WARN} Existing vim-plug found."
     else
         echo -e "${INFO} Installing vim-plug..."
+        mkdir -p "$VIM_PLUG_PATH"
+        curl -so "$VIM_PLUG_PATH/plug.vim" "$VIM_PLUG_URL"
+        echo -e "${OK} vim-plug installed"
     fi
-    mkdir -p "$VIM_PLUG_PATH"
-    curl -so "$VIM_PLUG_PATH/plug.vim" "$VIM_PLUG_URL"
-    echo -e "${OK} vim-plug installed"
 }
 
 configure_neovim() {
@@ -102,15 +101,15 @@ install_plugins() {
         echo -e "${FAIL} Failed to install plugins with vim-plug."
         exit 1
     fi
-    if ! nvim --headless +"CocInstall -sync coc-clangd" +qall &>/dev/null; then
-        echo -e "${WARN} Failed to install coc-clangd plugin."
+    if ! nvim --headless +"CocInstall -sync coc-clangd coc-cmake coc-spell-checker coc-nav coc-git coc-sh coc-snippets" +qall &>/dev/null; then
+        echo -e "${WARN} Failed to install coc extensions."
     fi
     echo -e "${OK} Plugins installed."
 }
 
 main() {
     echo -e "\e[34m===== NEOVIM SETUP SCRIPT =====\e[0m"
-    echo -e "Choose installation method:\n0 - Package Manager (default)\n1 - From Source\nq - Quit"
+    echo -e "Choose installation method:\n0 - Package Manager (default)\n1 - From Source\n2 - Manual\nq - Quit"
     read -r -p "Your choice: " choice
 
     while true ; do
@@ -118,15 +117,26 @@ main() {
             choice=0
         fi
         case $choice in
-            0) install_package neovim nvim; install_package nodejs node; install_package clang clang-format; break ;;
-            1) install_neovim; install_node; break ;;
+            0) install_package neovim nvim; install_package nodejs node; install_package clang clang-format; install_package clang-tools-extra clang-format; install_vim_plug; break ;;
+            1) install_neovim; install_node; install_vim_plug; break ;;
+            2) echo -e "${WARN} Install manual: vim-plug, nodejs, clang-format, clang-rename (might be package clang-tools-extra)"; break ;;
             q) exit 0 ;;
             *) echo "Invalid choice"; read -r -p "Your choice: " choice ;;
         esac
     done 
-    install_vim_plug
-    configure_neovim
-    install_plugins
+
+    while true ; do
+        read -r -p "Configuration (Y/n): " option 
+        if [[ $option == "Y" ]]; then
+            configure_neovim
+            install_plugins
+        elif [[ $option == "n" ]]; then
+            echo -e "${INFO} configuration skipped."
+        else
+            echo "Invalid choice. "
+        fi
+    done
+
     echo -e "${OK} Installation completed."
 }
 
