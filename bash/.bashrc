@@ -1,6 +1,5 @@
 # .bashrc
 
-# Global configurations
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
@@ -10,26 +9,34 @@ export PATH
 export EDITOR=nvim
 export CXX=clang++
 
-# Clear and save history
 history -c && history -w
 trap 'history -c' EXIT
 
-# Git Aliases
 alias gst="git status -sb"
 alias gad="git add"
 alias gaa="git add -A"
 alias gcm="git commit"
 alias gca="git commit -a"
+alias gam="git commit --amend"
+alias gcaa="git commit -a --amend"
 alias gph="git push"
 alias gpo="git push origin"
+alias gpf="git push --force"
+alias gplr="git pull -r"
+alias gpln="git pull --no-rebase"
+alias gre="git rebase"
+alias grei="git rebase -i"
 alias gbra="git branch -a"
 alias gbr="git branch"
 alias gsw="git switch"
 alias glg="git log --graph --decorate --pretty=oneline --abbrev-commit"
+alias cmb="cmake -B build"
+alias bld="cmake --build ."
+alias tst="ctest"
 
-# Utility Aliases
 alias ping='ping -c 2'
-alias mkdir='mkdir -p'
+alias md='mkdir -p'
+alias rd='rmdir'
 alias cls='clear'
 alias ll='exa --header --long --group --git -Alh --sort=name'
 alias l='exa -1'
@@ -39,25 +46,22 @@ alias cat='bat --style plain --paging never --theme OneHalfDark'
 alias bat='bat --theme OneHalfDark'
 alias ins='sudo dnf install'
 alias upd='sudo dnf update'
-
-# Navigation Aliases 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias dow='cd ~/Downloads'
 alias doc='cd ~/Documents'
 
-# Editor Aliases 
 alias edb='${EDITOR} ~/.bashrc'
 alias edvi='${EDITOR} ~/.config/nvim/init.vim'
 alias edclangf='${EDITOR} ~/.clang-format'
 alias edhy='${EDITOR} ~/.config/hypr/hyprland.conf'
 alias edwb='${EDITOR} ~/.config/waybar/config.jsonc'
-alias reswb='killall waybar; waybar &'
+alias edwbs='${EDITOR} ~/.config/waybar/style.css'
+alias reswb='killall waybar && waybar &'
 alias ed='${EDITOR}'
 alias sed='sudo ${EDITOR}'
 alias sour='source ~/.bashrc'
 
-# Permissions Aliases 
 alias 000='chmod -R 000'
 alias 644='chmod -R 644'
 alias 666='chmod -R 666'
@@ -73,7 +77,7 @@ function run {
 }
 
 function gdf {
-    git diff $@ | bat
+    git diff $@ | bat -l C++
 }
 
 function custom_prompt {
@@ -89,7 +93,6 @@ function custom_prompt {
     local SAND="\[\033[38;5;183m\]"
 
     local SEPARATOR="${LIGHTGRAY} • ${RESET}"
-    # Error Display
     if [[ $LAST_STATUS != 0 ]]; then
         case $LAST_STATUS in
             1) error_msg="Error" ;;
@@ -104,7 +107,6 @@ function custom_prompt {
         PS1=""
     fi
 
-    # User and Host Display for SSH
     PS1+="${RED}\u${RESET}"
     local SSH_IP="${SSH_CLIENT%% *}"
     if [[ -n "$SSH_IP" ]]; then
@@ -113,13 +115,12 @@ function custom_prompt {
 
     PS1+="${SEPARATOR}${BROWN}\w${RESET}"
 
-    # Git Information
     local branch=$(git branch --show-current 2>/dev/null)
     if [[ -n "$branch" ]]; then
-        local modified=$(git diff --name-only | wc -l)
-        local untracked=$(git ls-files --others --exclude-standard | wc -l)
-        local staged=$(git diff --cached --name-only | wc -l)
-        local to_push=$(git log origin/$branch..$branch --oneline | wc -l)
+        local modified=$(git diff --name-only 2>/dev/null | wc -l)
+        local untracked=$(git ls-files --others --exclude-standard 2>/dev/null | wc -l)
+        local staged=$(git diff --cached --name-only 2>/dev/null | wc -l)
+        local to_push=$(git log origin/$branch..$branch --oneline 2>/dev/null | wc -l)
 
         PS1+=$SEPARATOR"${CYAN}$branch${RESET}"
         ((untracked > 0)) && PS1+="${SEPARATOR}${YELLOW}U~${untracked}${RESET}"
