@@ -1,12 +1,13 @@
-[shell]
-program = "/bin/zsh"
+[terminal]
+shell = "/bin/zsh"
 
 [env]
 TERM = "xterm-256color"
-#WINIT_X11_SCALE_FACTOR = "2"
-#WINIT_WAYLAND_SCALE_FACTOR = "2"
+WINIT_X11_SCALE_FACTOR = "2"
+WINIT_WAYLAND_SCALE_FACTOR = "2"
 
 [window]
+decorations_theme_variant = "Dark"
 dimensions = { columns = 80, lines = 25 }
 padding = { x = 0, y = 0 } 
 dynamic_padding = false
@@ -18,7 +19,7 @@ size = 15.0
 normal = { family = "Source Code Pro", style = "Regular" }
 
 [colors]
-primary = { background = "#1d1f21", foreground = "#c5c8c6" }
+primary = { background = "#181818", foreground = "#c5c8c6" }
 cursor = { text = "#1d1f21", cursor = "#c5c8c6" }
 
 [colors.bright]
