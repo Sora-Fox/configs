@@ -18,6 +18,7 @@ Plug 'tpope/vim-fugitive' " Git Integration
 
 call plug#end()
 
+
 " ===================================================================
 "                        STATUSLINE CONFIGURATION
 " ===================================================================
@@ -128,7 +129,7 @@ set nobackup " Disable backup files
 set noswapfile " Disable swap files
 set encoding=utf-8 " Set default file encoding to UTF-8
 set fileencodings=utf8,cp1251 " Recognize UTF-8 and CP1251 encodings
-set termencoding=utf-8 " Set terminal encoding to UTF-8
+"set termencoding=utf-8 " Set terminal encoding to UTF-8
 
 
 " ===================================================================
@@ -153,6 +154,9 @@ inoremap <silent><expr> <C-j>
             \ coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
 inoremap <silent><expr> <C-k>
             \ coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
+
 nnoremap <C-s> :wqa<CR>
+
 inoremap jj <ESC>
+
 
