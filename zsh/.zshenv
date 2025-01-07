@@ -10,12 +10,14 @@ export HISTSIZE=10000
 export SAVEHIST=0
 
 export EDITOR=nvim
-export TERM=xterm-256color
+bindkey -e
 
 export CXX=clang++
 export CC=clang
-export CXXFLAGS="-O2 -march=native -mtune=native -Wall -Wextra -Wpedantic -stdlib=libc++"
-export CFLAGS="-O2 -Wall -Wextra -Wpedantic -march=native"
+export CFLAGS="-O2 -march=corei7 -mtune=corei7 -pipe -Wall -Wextra -Wpedantic"
+export CXXFLAGS="${CFLAGS}"
+
+export TERM=xterm-256color
 
 #unset WAYLAND_DISPLAY
 #export DISPLAY=:0
