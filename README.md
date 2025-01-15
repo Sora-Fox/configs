@@ -1,7 +1,7 @@
 # Linux Configuration Files
 
-This repository contains configuration files and setup scripts for various Linux applications, including:
-**Alacritty**, **Bash**, **Fastfetch**, **Neovim**, **Qutebrowser**, **Waybar**, **ClangFormat**, **Zsh**
+This repository contains my configuration files and setup scripts for various Linux applications.
+
 
 ## Usage
 

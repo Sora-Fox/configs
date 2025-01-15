@@ -14,6 +14,7 @@ Plug 'rhysd/vim-clang-format'
 
 " --- Other ---
 Plug 'preservim/nerdcommenter'
+Plug 'preservim/tagbar'
 Plug 'tpope/vim-fugitive' " Git Integration
 
 call plug#end()
@@ -159,4 +160,5 @@ nnoremap <C-s> :wqa<CR>
 
 inoremap jj <ESC>
 
+nmap <C-t> :TagbarToggle<CR>
 

@@ -9,17 +9,11 @@ export HISTFILE=$ZDOTDIR/.zhistory
 export HISTSIZE=10000
 export SAVEHIST=0
 
-export EDITOR=nvim
-bindkey -e
-
 export CXX=clang++
 export CC=clang
-export CFLAGS="-O2 -march=corei7 -mtune=corei7 -pipe -Wall -Wextra -Wpedantic"
-export CXXFLAGS="${CFLAGS}"
+export COMMON_FLAGS="-O2 -pipe -march=native -Wall -Wextra"
+export CFLAGS="${COMMON_FLAGS}"
+export CXXFLAGS="${COMMON_FLAGS}"
 
 export TERM=xterm-256color
-
-#unset WAYLAND_DISPLAY
-#export DISPLAY=:0
-#export GDK_BACKEND=x11
-#export XDG_SESSION_TYPE=x11
+export EDITOR=nvim
