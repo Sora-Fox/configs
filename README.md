@@ -5,10 +5,10 @@ This repository contains my configuration files and setup scripts for various Li
 
 ## Usage
 
-   ```bash
+```bash
    git clone https://github.com/Sora-Fox/configs.git
-   cd ./configs && ./setup_all.sh
-   ```
+   cd ./configs && ./setup.sh
+```
 
 ## License
 
