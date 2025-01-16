@@ -10,7 +10,7 @@ check_dependencies() {
     local all_found=true
     for dep in "${dependencies[@]}"; do
         if ! command -v "$dep" &>/dev/null; then
-            echo -e "$WARN Dependency '$dep' is not installed or not in PATH."
+            echo -en "\n$WARN Dependency '$dep' is not installed or not in PATH."
             all_found=false
         fi
     done
@@ -25,7 +25,7 @@ backup_if_exists() {
     if [ -f "$file_path" ]; then
         local backup_dir="$(dirname "$0")"
         local timestamp="$(date +%Y%m%d%H%M%S)"
-        local backup_path="$backup_dir/$file_name.bak.$timestamp"
+        local backup_path="$backup_dir/$file_name$timestamp.bak"
         echo -e "$WARN $file_name already exists. Creating backup at $backup_path"
         cp "$file_path" "$backup_path"
     fi
@@ -42,57 +42,63 @@ ask_user() {
     esac
 }
 
-echo -e "\033[34mPlease choose which configs to install.\033[0m"
+install_config() {
+    local source_dir=$1
+    local target_dir=$2
+    local dependencies=("${@:3}")
 
-if ask_user "Alacritty"; then
-    check_dependencies "alacritty"
-    mkdir -p "$HOME/.config/alacritty"
-    backup_if_exists "$HOME/.config/alacritty/alacritty.toml"
-    cp alacritty/alacritty.toml "$HOME/.config/alacritty/"
-fi
+    check_dependencies ${dependencies[@]}
+    mkdir -p $target_dir
 
-if ask_user "Bash"; then
-    check_dependencies "bash"
-    backup_if_exists "$HOME/.bashrc"
-    cp bash/.bashrc "$HOME/"
-    echo -e "$FINE Bash config installed to $HOME/.bashrc."
-fi
-
-if ask_user "Fastfetch"; then
-    check_dependencies "fastfetch"
-    mkdir -p "$HOME/.config/fastfetch"
-    for file in fastfetch/*; do
-        backup_if_exists "$HOME/.config/fastfetch/$(basename "$file")"
-        cp "$file" "$HOME/.config/fastfetch/"
+    shopt -s dotglob
+    for file in $source_dir/*; do
+        local target_file=$target_dir/$(basename $file)
+        backup_if_exists $target_file
     done
-fi
+    echo -e "$FINE configs installed to $target_dir"
+}
 
-if ask_user "Neovim"; then
-    check_dependencies "nvim" "node"
-    mkdir -p "$HOME/.config/nvim"
-    backup_if_exists "$HOME/.config/nvim/init.vim"
-    cp nvim/init.vim "$HOME/.config/nvim/"
-fi
+main() {
+    echo -e "\033[34mPlease choose which configs to install.\033[0m"
 
-if ask_user "Qutebrowser"; then
-    check_dependencies "qutebrowser"
-    mkdir -p "$HOME/.config/qutebrowser"
-    for file in qutebrowser/*; do
-        backup_if_exists "$HOME/.config/qutebrowser/$(basename "$file")"
-        cp "$file" "$HOME/.config/qutebrowser/"
-    done
-fi
+    if ask_user "Alacritty"; then
+        install_config "alacritty" "$HOME/.config/alacritty" "alacritty"
+    fi
 
-if ask_user "Zsh"; then
-    check_dependencies "zsh"
-    backup_if_exists "$HOME/.zshenv"
-    cp zsh/.zshenv "$HOME/"
-    mkdir -p "$HOME/.config/zsh"
-    for file in zsh/*; do
-        backup_if_exists "$HOME/.config/zsh/$(basename "$file")"
-        cp "$file" "$HOME/.config/zsh/"
-    done
-    cp zsh/.zshrc "$HOME/.config/zsh"
-fi
+    if ask_user "Bash"; then
+        install_config "bash" "$HOME" "bash" "eza" "bat"
+    fi
 
-echo -e "\033[34mAll selected configurations have been installed.\033[0m"
+    if ask_user "Fastfetch"; then
+        install_config "fastfetch" "$HOME/.config/fastfetch" "fastfetch"
+    fi
+
+    if ask_user "Neovim"; then
+        install_config "nvim" "$HOME/.config/nvim" "nvim" "node" "npm"
+        if ! nvim --headless +PlugInstall +qall &>/dev/null; then
+            echo -e "${FAIL} Failed to install plugins with vim-plug."
+        else
+            echo -e "$FINE Neovim plugins installed"
+            if ! nvim --headless +"CocInstall -sync coc-clangd coc-cmake coc-spell-checker coc-nav coc-git coc-sh coc-snippets" +qall &>/dev/null; then
+                echo -e "${FAIL} Failed to install coc extensions."
+            else
+                echo -e "$FINE CocNvim extensions installed"
+            fi
+        fi
+    fi
+
+    if ask_user "Qutebrowser"; then
+        install_config "qutebrowser" "$HOME/.config/qutebrowser" "qutebrowser"
+    fi
+
+    if ask_user "Zsh"; then
+        install_config "zsh" "$HOME/.config/zsh" "zsh" "eza" "bat" "btop" "rg" "fastfetch"
+        rm "$HOME/.config/zsh/.zshenv"
+        backup_if_exists "$HOME/.zshenv"
+        cp "zsh/.zshenv" "$HOME/"
+    fi
+
+    echo -e "\033[34mAll selected configurations have been installed.\033[0m"
+}
+
+main
