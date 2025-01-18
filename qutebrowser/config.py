@@ -1,5 +1,7 @@
+import os
+
 config.load_autoconfig(False)
-c.url.start_pages = "https://www.google.com"
+c.url.start_pages = "https://duckduckgo.com"
 c.url.searchengines = {
     "DEFAULT": "https://duckduckgo.com/?q={}",
     "g":       "https://www.google.com/search?q={}",
