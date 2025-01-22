@@ -5,17 +5,17 @@
     "padding": {
       "top": 1,
       "left": 2
-    }
+    },
+    "color": { "1": "yellow" }
   },
   "modules": [
     "break",
     { "type": "custom", "format": "───────────────────────────────────────────────" },
-    "os",
-    "kernel",
-    "packages",
-    "wm",
-    "shell",
-    "terminal",
+    { "type": "os", "keyColor": "yellow" },
+    { "type": "kernel", "keyColor": "yellow" },
+    { "type": "uptime", "keyColor": "yellow" },
+    { "type": "packages", "keyColor": "yellow" },
+    { "type": "disk", "keyColor": "yellow" },
     { "type": "custom", "format": "───────────────────────────────────────────────" }
   ]
 }
