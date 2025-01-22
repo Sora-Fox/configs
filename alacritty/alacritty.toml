@@ -3,8 +3,8 @@ shell = "/bin/zsh"
 
 [env]
 TERM = "xterm-256color"
-#WINIT_X11_SCALE_FACTOR = "2"
-#WINIT_WAYLAND_SCALE_FACTOR = "2"
+#WINIT_X11_SCALE_FACTOR = "1"
+#WINIT_WAYLAND_SCALE_FACTOR = "1"
 
 [window]
 decorations_theme_variant = "Dark"
@@ -12,10 +12,10 @@ dimensions = { columns = 80, lines = 25 }
 padding = { x = 0, y = 0 } 
 dynamic_padding = false
 startup_mode = "Windowed"
-opacity = 1
+opacity = 0.8 
 
 [font]
-size = 15.0
+size = 11.0
 normal = { family = "Source Code Pro", style = "Regular" }
 
 [colors]

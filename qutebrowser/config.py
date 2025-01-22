@@ -10,7 +10,7 @@ c.url.searchengines = {
 
 # ============= APPEARANCE ===========
 c.colors.webpage.darkmode.enabled = True
-c.zoom.default = "125%"
+c.zoom.default = "100%"
 c.fonts.default_size = "13pt"
 c.fonts.default_family = "Source Code Pro"
 c.tabs.position = "top"

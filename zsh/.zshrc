@@ -16,3 +16,5 @@ setopt HIST_SAVE_NO_DUPS
 bindkey -e
 
 fastfetch --config $XDG_CONFIG_HOME/fastfetch/greeting.jsonc
+export QT_SCALE_FACTOR=1.2
+

@@ -17,3 +17,7 @@ export CXXFLAGS="${COMMON_FLAGS}"
 
 export TERM=xterm-256color
 export EDITOR=nvim
+
+export GTK_THEME="Adwaita-dark"
+export GDK_SCALE=1.25
+export QT_SCALE_FACTOR=1.2
