@@ -1,3 +1,5 @@
+# ~/.config/qutebrowser/config.py
+
 import os
 
 config.load_autoconfig(False)
@@ -8,7 +10,6 @@ c.url.searchengines = {
     "y":       "https://www.youtube.com/results?search_query={}",
 }
 
-# ============= APPEARANCE ===========
 c.colors.webpage.darkmode.enabled = True
 c.zoom.default = "100%"
 c.fonts.default_size = "13pt"
@@ -17,7 +18,6 @@ c.tabs.position = "top"
 c.tabs.width = 200
 c.statusbar.show = "always"
 
-# ============= PRIVACY ===========
 c.content.tls.certificate_errors = "block"
 c.content.private_browsing = True
 c.auto_save.session = False
@@ -29,7 +29,6 @@ c.content.webrtc_ip_handling_policy = "disable-non-proxied-udp"
 c.content.autoplay = False
 os.system("rm -rf ~/.cache/qutebrowser/*")
 
-# ========== ADD BLOCKING ===============
 c.content.blocking.method = "adblock"
 c.content.blocking.hosts.lists = [
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
@@ -41,8 +40,6 @@ c.content.blocking.hosts.lists = [
     "https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/refs/heads/master/hosts/hosts3"
 ]
 
-# ======= BINDINGS ===========
 config.bind("<Ctrl-r>", "config-source")
 config.bind("x", "tab-close")
 config.bind("t", "open -t")
-

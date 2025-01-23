@@ -1,3 +1,5 @@
+# ~/.config/alacritty/alacritty.toml
+
 [terminal]
 shell = "/bin/zsh"
 

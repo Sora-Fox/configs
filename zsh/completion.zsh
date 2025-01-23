@@ -1,3 +1,5 @@
+# ~/.config/zsh/completion.zsh
+
 # Original Source:
 # https://github.com/Phantas0s/.dotfiles/blob/master/zsh/completion.zsh
 
@@ -32,4 +34,3 @@ bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
-

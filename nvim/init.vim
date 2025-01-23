@@ -156,9 +156,6 @@ inoremap <silent><expr> <C-j>
 inoremap <silent><expr> <C-k>
             \ coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
 
-nnoremap <C-s> :wqa<CR>
-
 inoremap jj <ESC>
 
 nmap <C-t> :TagbarToggle<CR>
-

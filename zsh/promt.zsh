@@ -1,3 +1,5 @@
+# ~/.config/zsh/promt.zsh
+
 custom_prompt() {
   local RED="%F{red}"
   local YELLOW="%F{220}"
@@ -34,4 +36,3 @@ custom_prompt() {
 
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd custom_prompt
-

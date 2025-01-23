@@ -1,3 +1,5 @@
+# ~/.config/zsh/aliases.zsh
+
 alias gad='git add'
 alias gaa='git add -A'
 alias gcm='git commit'
@@ -33,7 +35,8 @@ alias ll='eza --header --long --group --git -Alh --sort=name'
 alias l='eza -1'
 alias ls='eza -Ah'
 alias tree='eza -T'
-alias cpy='wl-copy'
+#alias cpy='wl-copy'
+alias cpy='xclip -selection clipboard'
 alias cat='bat --style plain --paging never --theme OneHalfDark'
 alias bat='bat --theme OneHalfDark'
 
