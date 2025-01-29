@@ -60,6 +60,7 @@ declare -A files_to_process=(
     ["zsh/completion.zsh"]="$CONFIG_HOME/zsh/completion.zsh"
     ["zsh/promt.zsh"]="$CONFIG_HOME/zsh/promt.zsh"
     ["zsh/zshrc"]="$CONFIG_HOME/zsh/.zshrc"
+    ["lf/lfrc"]="$CONFIG_HOME/lf/lfrc"
 )
 
 if [[ $# -ne 1 ]]; then

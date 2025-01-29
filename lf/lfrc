@@ -1,0 +1,7 @@
+set icons
+set hidden
+
+# map d :delete
+map x cut
+map yy copy
+map pp paste
